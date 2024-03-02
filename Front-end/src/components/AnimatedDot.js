@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import "./AnimatedDot.css"
 
 class AnimatedDot extends Component {
   state = {
