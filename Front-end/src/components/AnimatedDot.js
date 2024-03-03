@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import "./AnimatedDot.css"
+import "./AnimatedDot.css";
+import Messaging from './Messaging';
 
 class AnimatedDot extends Component {
   state = {
@@ -7,6 +8,14 @@ class AnimatedDot extends Component {
   };
 
   componentDidMount() {
+    Messaging.connectWithPromise()
+      .then(() => {
+        console.log('Connected to Solace Cloud');
+      })
+      .catch((error) => {
+        console.error('Failed to connect to Solace Cloud', error);
+      });
+
     // Adjust animation duration based on car speed
     this.adjustDotSpeed(100); // Adjust car speed as needed in km/hr
 
@@ -14,10 +23,14 @@ class AnimatedDot extends Component {
     this.proximityInterval = setInterval(() => {
       this.checkProximityAndNotify(50); // Adjust the threshold distance as needed
     }, 1000); // Check every second
+
+    // Publish dot position every 1 second
+    this.publishDotPositionInterval = setInterval(this.publishDotPosition, 1000);
   }
 
   componentWillUnmount() {
     clearInterval(this.proximityInterval);
+    clearInterval(this.publishDotPositionInterval);
   }
 
   adjustDotSpeed(carSpeedKmPerHour) {
@@ -59,6 +72,23 @@ class AnimatedDot extends Component {
       this.setState({ notified: false }); // Reset the flag when the dot moves away from the dot-stations
     }
   }
+
+  publishDotPosition = () => {
+    // Get dot position
+    const dotElement = document.getElementById('dot');
+    const position = {
+      x: dotElement.offsetLeft,
+      y: dotElement.offsetTop,
+      car_no:"CAR-01"
+    };
+
+    const payload = JSON.stringify(position)
+    // Publish dot position to a topic named 'car'
+    Messaging.publish('cars', payload);
+
+    // Pass position to parent component
+    this.props.updatePosition(position);
+  };
 
   render() {
     return (
