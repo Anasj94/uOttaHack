@@ -19,17 +19,12 @@ class F2F extends Component {
     // Adjust animation duration based on car speed
     this.adjustDotSpeed(100); // Adjust car speed as needed in km/hr
 
-    // Check proximity and notify periodically (adjust the interval as needed)
-    this.proximityInterval = setInterval(() => {
-      this.checkProximityAndNotify(50); // Adjust the threshold distance as needed
-    }, 1000); // Check every second
 
     // Publish dot position every 1 second
     this.publishDotPositionInterval = setInterval(this.publishDotPosition, 1000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.proximityInterval);
     clearInterval(this.publishDotPositionInterval);
   }
 
@@ -45,32 +40,6 @@ class F2F extends Component {
 
     // Update animation duration
     dotElement.style.animationDuration = timeTakenInMillis + 'ms';
-  }
-
-  calculateDistance(element1, element2) {
-    const rect1 = element1.getBoundingClientRect();
-    const rect2 = element2.getBoundingClientRect();
-    const distance = Math.sqrt(
-      Math.pow(rect1.x - rect2.x, 2) + Math.pow(rect1.y - rect2.y, 2)
-    );
-    return distance;
-  }
-
-  checkProximityAndNotify(thresholdDistance) {
-    const dotElement = document.getElementById('dot');
-    const dotStationElement = document.querySelector('.dot-station');
-    const dotStationElement2 = document.querySelector('.dot-station2');
-    const distance1 = this.calculateDistance(dotElement, dotStationElement);
-    const distance2 = this.calculateDistance(dotElement, dotStationElement2);
-    if (
-      (distance1 < thresholdDistance || distance2 < thresholdDistance) &&
-      !this.state.notified
-    ) {
-    //   alert('Dot is near a dot-station!');
-      this.setState({ notified: true }); // Set the flag to true to indicate that notification has been triggered
-    } else if (distance1 >= thresholdDistance && distance2 >= thresholdDistance) {
-      this.setState({ notified: false }); // Reset the flag when the dot moves away from the dot-stations
-    }
   }
 
   publishDotPosition = () => {
@@ -90,12 +59,19 @@ class F2F extends Component {
   };
 
   render() {
+    const {initialPosition } = this.props;
+    const dotStyle = initialPosition 
+      ? { backgroundColor: 'blue', // Change color based on condition
+      animation: 'moveDot 53s linear forwards',left: initialPosition, top: initialPosition.y }
+      : {backgroundColor: 'white',
+      opacity:0, // Default state color
+      left: '0', // Default starting position
+      top: 'calc(50% - 4px)',};
     return (
       <div className="container">
         <div className="line"></div>
-        <div className="dot" id="dot"></div>
-        <div className="dot-station"></div>
-        <div className="dot-station2"></div>
+        <div className="dot" id="dot" ></div>
+        <div className="dot2" id="dot" style = {dotStyle} ></div>
       </div>
     );
   }
