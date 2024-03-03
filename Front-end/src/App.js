@@ -1,8 +1,10 @@
+// App.js
 import React, { Component } from 'react';
 import WelcomeMessage from './components/welcomeMessage';
 import AnimatedDot from './components/AnimatedDot';
 import mySound from './sounds/ford-start.mp3';
 import './App.css';
+import NewsTicker from './components/NewsTicker';
 
 class App extends Component {
   constructor() {
@@ -12,6 +14,7 @@ class App extends Component {
       showBackground: false,
       showConsentModal: false,
       userConsent: '',
+      position: { x: 0, y: 0, car_no: '' }
     };
     this.closeWelcome = this.closeWelcome.bind(this);
     this.audio = new Audio(mySound);
@@ -58,6 +61,10 @@ class App extends Component {
     );
   }
 
+  updatePosition = (newPosition) => {
+    this.setState({ position: newPosition });
+  }
+
   render() {
     if (this.state.showBlankScreen) {
       return <div className="blank-screen"></div>; // Ensure you have styles set for .blank-screen to make it truly blank or styled as you wish
@@ -72,7 +79,12 @@ class App extends Component {
             {this.renderConsentModal()}
             <div className="background-image">{/* Background image displayed*/}</div>
           </div>
-        ) : this.state.userConsent === 'Charging_points'?<AnimatedDot/>:null}
+        ) : this.state.userConsent === 'Charging_points' ? (
+          <div>
+            <AnimatedDot updatePosition={this.updatePosition} />
+            <NewsTicker/>
+          </div>
+        ) : null}
       </div>
     );
   }
