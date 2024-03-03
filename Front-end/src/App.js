@@ -5,6 +5,7 @@ import AnimatedDot from './components/AnimatedDot';
 import mySound from './sounds/ford-start.mp3';
 import './App.css';
 import NewsTicker from './components/NewsTicker';
+import F2F from './components/F2F';
 
 class App extends Component {
   constructor() {
@@ -84,7 +85,7 @@ class App extends Component {
             <AnimatedDot updatePosition={this.updatePosition} />
             <NewsTicker/>
           </div>
-        ) : null}
+        ) : this.state.userConsent === 'Connect' ? <div><F2F/><NewsTicker/></div>: null}
       </div>
     );
   }

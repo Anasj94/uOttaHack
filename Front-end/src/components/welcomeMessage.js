@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './welcomeMessage.css'
 
-const WelcomeMessage = ({ duration = 2000,onClose }) => {
+const WelcomeMessage = ({ duration = 1000,onClose }) => {
   useEffect(() => {
     // Close the welcome message after 'duration' milliseconds
     const timer = setTimeout(onClose, duration);
