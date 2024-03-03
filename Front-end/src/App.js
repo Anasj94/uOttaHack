@@ -16,7 +16,8 @@ class App extends Component {
       showConsentModal: false,
       userConsent: '',
       allCars: [],
-      position: { x: 0, y: 0, car_no: '' }
+      position: { x: 0, y: 0, car_no: '' },
+      initialPosition:0,
     };
     this.closeWelcome = this.closeWelcome.bind(this);
     this.audio = new Audio(mySound);
@@ -67,13 +68,39 @@ class App extends Component {
     this.setState({ position: newPosition });
   }
 
-  updateAllCars = (newCar) =>{
-    this.setState(prevState => ({
-      allCars: [...prevState.allCars, newCar]
-    }));
-    console.log(this.state.allCars)
-    
+  updateAllCars = (newCarString) => {
+    if (newCarString !== undefined && newCarString.trim() !== '') {
+      let newCar;
+      try {
+        // Attempt to find the first JSON object in the string
+        const match = newCarString.match(/{.*?}/);
+        if (match) {
+          newCar = JSON.parse(match[0]);
+        } else {
+          throw new Error("No JSON object found");
+        }
+      } catch (error) {
+        console.error("Error parsing newCarString:", error);
+        return; // Exit if parsing fails
+      }
+  
+      this.setState(prevState => {
+        // Check if the car_no already exists in the allCars array
+        const carExists = prevState.allCars.some(car => car.car_no === newCar.car_no);
+        if (!carExists) {
+          // If not, add the newCar to the array
+          return {
+            allCars: [...prevState.allCars, newCar]
+          };
+        } else {
+          // If it exists, do not modify the state
+          return {};
+        }
+      }, () => { console.log(this.state.allCars); });
+    }
+    this.setState({initialPosition:this.state.allCars[0].x})
   }
+  
 
   render() {
     if (this.state.showBlankScreen) {
@@ -94,7 +121,7 @@ class App extends Component {
             <AnimatedDot updatePosition={this.updatePosition} />
             <NewsTicker newsType="latestNews"/>
           </div>
-        ) : this.state.userConsent === 'Connect' ? <div><F2F/><NewsTicker newsType="allCarsNews" updateAllCars={this.updateAllCars}/></div>: null}
+        ) : this.state.userConsent === 'Connect' ? <div><F2F initialPosition={this.state.initialPosition}/><NewsTicker newsType="allCarsNews" updateAllCars={this.updateAllCars}/></div>: null}
       </div>
     );
   }
