@@ -4,7 +4,8 @@ import Messaging from './Messaging'; // Import your Messaging module
 
 class NewsTicker extends Component {
   state = {
-    latestNews: '', // Initialize with an empty string for the latest news
+    latestNews: '',
+    allCarsNew:'' // Initialize with an empty string for the latest news
   };
 
   componentDidMount() {
@@ -20,17 +21,34 @@ class NewsTicker extends Component {
   handleMessage = (message) => {
     // Handle incoming message from MQTT
     const newValue = message.payloadString;
-    // Update latest news
-    this.setState({ latestNews: newValue });
+    // Check the topic of the message
+    if (message.destinationName === 'news/CAR-03') {
+      // Update latest news
+      this.setState((prevState) => ({
+        latestNews: `${prevState.latestNews}\n${newValue}`,
+      }));
+    } else if (message.destinationName === 'all_cars') {
+      // Update all cars news
+      this.setState((prevState) => ({
+        allCarsNews: `${prevState.allCarsNews}\n${newValue}`,
+      }));
+    }
   };
 
   render() {
-    const { latestNews } = this.state;
-
+    const { latestNews, allCarsNews } = this.state;
+ 
     return (
       <div className="news-ticker-container">
         <div className="news-ticker">
-          <div className="news-item active">{latestNews}</div>
+          <div className="news-item active">
+            <h3>Latest News:</h3>
+            <p>{latestNews}</p>
+          </div>
+          <div className="news-item active">
+            <h3>All Cars News:</h3>
+            <p>{allCarsNews}</p>
+          </div>
         </div>
       </div>
     );
