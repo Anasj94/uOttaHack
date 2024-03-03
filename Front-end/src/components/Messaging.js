@@ -20,6 +20,8 @@ class Messaging extends Paho.Client {
         // this.subscribe('all_cars')
         this.subscribe('nearby/CAR-01');
         this.subscribe('alert');
+        this.subscribe('charging/CAR-01');
+
         resolve();
       };
       options.onFailure = reject;
