@@ -16,9 +16,10 @@ class Messaging extends Paho.Client {
     return new Promise((resolve, reject) => {
       options.onSuccess = () => {
         // Subscribe to the 'admin_news' topic upon successful connection
-        this.subscribe('news/CAR-03');
+        this.subscribe('news/CAR-01');
         // this.subscribe('all_cars')
-        this.subscribe('nearby/CAR-03');
+        this.subscribe('nearby/CAR-01');
+        this.subscribe('alert');
         resolve();
       };
       options.onFailure = reject;

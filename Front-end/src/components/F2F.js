@@ -48,7 +48,7 @@ class F2F extends Component {
     const position = {
       x: dotElement.offsetLeft,
       y: dotElement.offsetTop,
-      car_no:"CAR-03"
+      car_no:"CAR-01"
     };
 
     const payload = JSON.stringify(position)

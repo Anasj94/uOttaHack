@@ -22,12 +22,12 @@ class NewsTicker extends Component {
     // Handle incoming message from MQTT
     const newValue = message.payloadString;
     // Check the topic of the message
-    if (message.destinationName === 'news/CAR-03' && this.props.userConsent === 'Charging_points') {
+    if (message.destinationName === 'news/CAR-01' && this.props.userConsent === 'Charging_points') {
       // Update latest news
       this.setState((prevState) => ({
         latestNews: `${prevState.latestNews}\n${newValue}`,
       }));
-    } else if (message.destinationName === 'nearby/CAR-03' && this.props.userConsent === 'Connect') {
+    } else if (message.destinationName === 'nearby/CAR-01' && this.props.userConsent === 'Connect') {
       // Update all cars news
       this.setState((prevState) => ({
         allCarsNews: `${prevState.allCarsNews}\n${newValue}`,

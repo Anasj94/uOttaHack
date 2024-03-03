@@ -26,6 +26,25 @@ class AnimatedDot extends Component {
 
     // Publish dot position every 1 second
     this.publishDotPositionInterval = setInterval(this.publishDotPosition, 1000);
+    document.addEventListener('keydown', this.handleKeyDown);
+    
+  }
+
+  handleKeyDown = (event) => {
+    // Check if the pressed key is the desired key to trigger the action (e.g., 'Enter' key)
+    if (event.key === 'Enter') {
+      // Perform publishing action here
+      const dotElement = document.getElementById('dot');
+      const position = {
+        x: dotElement.offsetLeft,
+        y: dotElement.offsetTop,
+        car_no:"CAR-01"
+      };
+ 
+      const payload = JSON.stringify(position)
+      Messaging.publish('emergency', payload)
+      // You can publish or perform any other action here when the specified key is pressed
+    }
   }
 
   componentWillUnmount() {
@@ -79,7 +98,7 @@ class AnimatedDot extends Component {
     const position = {
       x: dotElement.offsetLeft,
       y: dotElement.offsetTop,
-      car_no:"CAR-03"
+      car_no:"CAR-01"
     };
 
     const payload = JSON.stringify(position)
