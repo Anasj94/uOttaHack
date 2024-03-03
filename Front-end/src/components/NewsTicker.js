@@ -27,11 +27,14 @@ class NewsTicker extends Component {
       this.setState((prevState) => ({
         latestNews: `${prevState.latestNews}\n${newValue}`,
       }));
-    } else if (message.destinationName === 'all_cars') {
+      var a = this.state.latestNews
+      // console.log('latestNews',a);
+    } else if (message.destinationName === 'nearby/CAR-03') {
       // Update all cars news
       this.setState((prevState) => ({
         allCarsNews: `${prevState.allCarsNews}\n${newValue}`,
       }));
+      this.props.updateAllCars(this.state.allCarsNews);
     }
   };
 

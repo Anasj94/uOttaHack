@@ -18,7 +18,7 @@ class Messaging extends Paho.Client {
         // Subscribe to the 'admin_news' topic upon successful connection
         this.subscribe('news/CAR-03');
         // this.subscribe('all_cars')
-        this.subscribe('all_cars');
+        this.subscribe('nearby/CAR-03');
         resolve();
       };
       options.onFailure = reject;
@@ -44,7 +44,7 @@ class Messaging extends Paho.Client {
 
   // called when a message arrives
   handleMessage(message) {
-    console.log("Received message", message.payloadString);
+    // console.log("Received message", message.payloadString);
     this.callbacks.forEach((callback) => callback(message));
   }
 }

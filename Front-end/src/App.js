@@ -15,6 +15,7 @@ class App extends Component {
       showBackground: false,
       showConsentModal: false,
       userConsent: '',
+      allCars: [],
       position: { x: 0, y: 0, car_no: '' }
     };
     this.closeWelcome = this.closeWelcome.bind(this);
@@ -66,6 +67,14 @@ class App extends Component {
     this.setState({ position: newPosition });
   }
 
+  updateAllCars = (newCar) =>{
+    this.setState(prevState => ({
+      allCars: [...prevState.allCars, newCar]
+    }));
+    console.log(this.state.allCars)
+    
+  }
+
   render() {
     if (this.state.showBlankScreen) {
       return <div className="blank-screen"></div>; // Ensure you have styles set for .blank-screen to make it truly blank or styled as you wish
@@ -85,7 +94,7 @@ class App extends Component {
             <AnimatedDot updatePosition={this.updatePosition} />
             <NewsTicker newsType="latestNews"/>
           </div>
-        ) : this.state.userConsent === 'Connect' ? <div><F2F/><NewsTicker newsType="allCarsNews"/></div>: null}
+        ) : this.state.userConsent === 'Connect' ? <div><F2F/><NewsTicker newsType="allCarsNews" updateAllCars={this.updateAllCars}/></div>: null}
       </div>
     );
   }

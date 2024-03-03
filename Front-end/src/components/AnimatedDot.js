@@ -66,7 +66,7 @@ class AnimatedDot extends Component {
       (distance1 < thresholdDistance || distance2 < thresholdDistance) &&
       !this.state.notified
     ) {
-      alert('Dot is near a dot-station!');
+      // alert('Dot is near a dot-station!');
       this.setState({ notified: true }); // Set the flag to true to indicate that notification has been triggered
     } else if (distance1 >= thresholdDistance && distance2 >= thresholdDistance) {
       this.setState({ notified: false }); // Reset the flag when the dot moves away from the dot-stations
