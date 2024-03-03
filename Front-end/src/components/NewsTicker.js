@@ -37,21 +37,32 @@ class NewsTicker extends Component {
 
   render() {
     const { latestNews, allCarsNews } = this.state;
- 
-    return (
-      <div className="news-ticker-container">
-        <div className="news-ticker">
-          <div className="news-item active">
-            <h3>Latest News:</h3>
-            <p>{latestNews}</p>
-          </div>
-          <div className="news-item active">
-            <h3>All Cars News:</h3>
-            <p>{allCarsNews}</p>
+    const {newsType} = this.props;
+
+    if(newsType === 'latestNews'){
+      return (
+        <div className="news-ticker-container">
+          <div className="news-ticker">
+            <div className="news-item active">
+              <h3>Latest News:</h3>
+              <p>{latestNews}</p>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+    else{
+      return (
+        <div className="news-ticker-container">
+          <div className="news-ticker">
+            <div className="news-item active">
+              <h3>All Cars News:</h3>
+              <p>{allCarsNews}</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 

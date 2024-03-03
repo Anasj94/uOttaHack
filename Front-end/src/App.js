@@ -83,9 +83,9 @@ class App extends Component {
         ) : this.state.userConsent === 'Charging_points' ? (
           <div>
             <AnimatedDot updatePosition={this.updatePosition} />
-            <NewsTicker/>
+            <NewsTicker newsType="latestNews"/>
           </div>
-        ) : this.state.userConsent === 'Connect' ? <div><F2F/><NewsTicker/></div>: null}
+        ) : this.state.userConsent === 'Connect' ? <div><F2F/><NewsTicker newsType="allCarsNews"/></div>: null}
       </div>
     );
   }
